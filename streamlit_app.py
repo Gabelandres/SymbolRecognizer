@@ -1,4 +1,4 @@
-#Input the relevant libraries
+# Input the relevant libraries
 import numpy as np
 import pandas as pd
 import streamlit as st
@@ -15,11 +15,10 @@ from sklearn.metrics import classification_report
 def app():
     
     st.title('Symbol Classification')
-    st.subheader('by Louie F. Cervantes M.Eng., WVSU College of ICT')
-    st.write('The naive bayes classifierperforms well on overlapped data.')
+    st.subheader('by Gabriel Constantine B. Belandres, BSCS 3B AI, WVSU College of ICT')
+    st.write('The naive bayes classifier performs well on overlapped data.')
 
     st.write('Dataset description:')
-
     st.write('Number of features: 64')
     text = """Feature representation: Binary values (1 or 0) representing the 8x8 pixels of an image.
         Target variable: This could be a single categorical variable representing the class of the image (e.g., digit recognition, traffic sign classification).
@@ -35,27 +34,29 @@ def app():
     clf = BernoulliNB() 
     options = ['Naive Bayes', 'Logistic Regression']
     selected_option = st.selectbox('Select the classifier', options)
-    if selected_option=='Logistic Regression':
+    if selected_option == 'Logistic Regression':
         clf = LogisticRegression(C=100, max_iter=100, multi_class='auto',
             penalty='l2', random_state=42, solver='lbfgs',
             verbose=0, warm_start=False)
     else:
         clf = BernoulliNB()
 
+    # Allow the user to choose between two CSV files
+    csv_file = st.selectbox('Select CSV file', ['3_symbols.csv', 'smiley_faces.csv'])
+    
     if st.button('Start'):
-        df = pd.read_csv('smiley_faces.csv', header=None)
-        # st.dataframe(df, use_container_width=True)  
+        df = pd.read_csv(csv_file, header=None)
         
-        # display the dataset
+        # Display the dataset
         st.header("Dataset")
         st.dataframe(df, use_container_width=True) 
 
-        #load the data and the labels
-        X = df.values[:,0:-1]
-        y = df.values[:,-1]    
+        # Load the data and labels
+        X = df.values[:, 0:-1]
+        y = df.values[:, -1]    
 
         st.header('Images')
-        # display the images 
+        # Display the images 
         fig, axs = plt.subplots(4, 10, figsize=(20, 8))
 
         # Iterate over the images and labels
@@ -66,8 +67,8 @@ def app():
             # Display the image
             ax.imshow(np.reshape(image, (8, 8)), cmap='binary')
 
-        # Add the title
-        ax.set_title(f'Training: {label}', fontsize=10)
+            # Add the title
+            ax.set_title(f'Training: {label}', fontsize=10)
 
         # Tighten layout to avoid overlapping
         plt.tight_layout()
@@ -77,7 +78,7 @@ def app():
         X_train, X_test, y_train, y_test = train_test_split(X, y, \
             test_size=0.2, random_state=42)
 
-        clf.fit(X_train,y_train)
+        clf.fit(X_train, y_train)
         y_test_pred = clf.predict(X_test)
 
         st.header('Confusion Matrix')
@@ -86,7 +87,8 @@ def app():
         st.header('Classification Report')
         # Test the classifier on the testing set
         st.text(classification_report(y_test, y_test_pred))
-    
-#run the app
+
+# Run the app
 if __name__ == "__main__":
     app()
+
