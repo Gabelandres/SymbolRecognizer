@@ -15,7 +15,7 @@ from sklearn.metrics import classification_report
 def app():
     
     st.title('Symbol Classification')
-    st.subheader('by Gabriel Constantine B. Belandres, BSCS 3B AI, WVSU College of ICT')
+    st.subheader('By: Gabriel Constantine B. Belandres, BSCS 3B AI, WVSU College of ICT')
     st.write('The naive bayes classifier performs well on overlapped data.')
 
     st.write('Dataset description:')
@@ -42,7 +42,7 @@ def app():
         clf = BernoulliNB()
 
     # Allow the user to choose between two CSV files
-    csv_file = st.selectbox('Select CSV file', ['3_symbols.csv', 'smiley_faces.csv'])
+    csv_file = st.selectbox('Select CSV file', ['smiley_faces.csv', '3_symbols.csv'])
     
     if st.button('Start'):
         df = pd.read_csv(csv_file, header=None)
